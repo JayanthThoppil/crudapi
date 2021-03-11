@@ -7,7 +7,7 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 
 // app.get('/',(req,res) => {
-//     res.send('Hello world from');
+//     res.send('Hello world from Jay');
 // });
 
 //create new students
@@ -23,7 +23,69 @@ app.use(express.json());
 //     res.send('Hello');
 // });
 
-app.post('/students',async(req,res) => {
+// app.post('/students',async(req,res) => {
+//     try{
+//         const user =new Student(req.body);
+//         const createUser = await user.save();
+//         res.status(201).send(createUser);
+//     }catch(e){
+//         res.status(400).send(e);
+//     }
+// })
+
+// app.get('/students',async(req,res) => {
+//     try{
+//         const studentsData = await Student.find();
+//         res.send(studentsData);
+//     }catch(e){
+//         res.send(e);
+//     }
+// })
+
+// app.get('/students/:id', async(req,res) => {
+//     try{
+//         const _id = req.params.id;
+
+//         const studentData = await Student.findById(_id);
+//         if(!studentData){
+//             return res.status(404).send();
+//         }else{
+//             res.send(studentData);
+//         }
+//     }catch(e){
+//         res.status(500).send(e);
+//     }    
+// })
+
+
+// app.patch('/students/:id', async (req,res) => {
+//     try{
+//         const _id = req.params.id;
+//         const updateStudent = await Student.findByIdAndUpdate(_id,req.body,{
+//             new:true
+//         });
+//         res.send(updateStudent);
+//     }catch(e){
+//         res.status(404).send(e);
+//     }
+// })
+
+// app.delete('/students/:id',async(req,res)=> {
+//     try{
+//         const _id = req.params.id;
+//         const deleteStudent = await Student.findByIdAndDelete(_id)
+//         if(!_id){
+//             return res.status(400).send()
+//         }
+//         else{
+//             res.send(deleteStudent);
+//         }
+//     }catch(e){
+//         res.status(500).send(e);
+//     }
+// })
+
+app.post('/',async(req,res) => {
     try{
         const user =new Student(req.body);
         const createUser = await user.save();
@@ -33,7 +95,7 @@ app.post('/students',async(req,res) => {
     }
 })
 
-app.get('/students',async(req,res) => {
+app.get('/',async(req,res) => {
     try{
         const studentsData = await Student.find();
         res.send(studentsData);
@@ -42,7 +104,7 @@ app.get('/students',async(req,res) => {
     }
 })
 
-app.get('/students/:id', async(req,res) => {
+app.get('/:id', async(req,res) => {
     try{
         const _id = req.params.id;
 
@@ -56,6 +118,39 @@ app.get('/students/:id', async(req,res) => {
         res.status(500).send(e);
     }    
 })
+
+
+app.patch('/:id', async (req,res) => {
+    try{
+        const _id = req.params.id;
+        const updateStudent = await Student.findByIdAndUpdate(_id,req.body,{
+            new:true
+        });
+        res.send(updateStudent);
+    }catch(e){
+        res.status(404).send(e);
+    }
+})
+
+app.delete('/:id',async(req,res)=> {
+    try{
+        const _id = req.params.id;
+        const deleteStudent = await Student.findByIdAndDelete(_id)
+        if(!_id){
+            return res.status(400).send()
+        }
+        else{
+            res.send(deleteStudent);
+        }
+    }catch(e){
+        res.status(500).send(e);
+    }
+})
+
+app.listen(port, () => {
+    console.log(`connecting to port no ${port}`);
+});
+
 
 // app.get('/students/:name', async(req,res) => {
 //     try{
@@ -71,33 +166,3 @@ app.get('/students/:id', async(req,res) => {
 //         res.status(500).send(e);
 //     }    
 // })
-
-app.patch('/students/:id', async (req,res) => {
-    try{
-        const _id = req.params.id;
-        const updateStudent = await Student.findByIdAndUpdate(_id,req.body,{
-            new:true
-        });
-        res.send(updateStudent);
-    }catch(e){
-        res.status(404).send(e);
-    }
-})
-
-app.delete('/students/:id',async(req,res)=> {
-    try{
-        const _id = req.params.id;
-        const deleteStudent = await Student.findByIdAndDelete(_id)
-        if(!_id){
-            return res.status(400).send()
-        }
-        else{
-            res.send(deleteStudent);
-        }
-    }catch(e){
-        res.status(500).send(e);
-    }
-})
-app.listen(port, () => {
-    console.log(`connecting to port no ${port}`);
-});
