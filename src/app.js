@@ -6,6 +6,100 @@ const app = express();
 const port = process.env.PORT || 3000;
 app.use(express.json());
 
+app.post('/',async(req,res) => {
+    try{
+        const user =new Student(req.body);
+        const createUser = await user.save();
+        res.status(201).send(createUser);
+    }catch(e){
+        res.status(400).send(e);
+    }
+})
+
+app.get('/',async(req,res) => {
+    try{
+        const studentsData = await Student.find();
+        res.send(studentsData);
+    }catch(e){
+        res.send(e);
+    }
+})
+
+app.get('/:id', async(req,res) => {
+    try{
+        const _id = req.params.id;
+
+        const studentData = await Student.findById(_id);
+        if(!studentData){
+            return res.status(404).send();
+        }else{
+            res.send(studentData);
+        }
+    }catch(e){
+        res.status(500).send(e);
+    }    
+})
+
+
+app.patch('/:id', async (req,res) => {
+    try{
+        const _id = req.params.id;
+        const updateStudent = await Student.findByIdAndUpdate(_id,req.body,{
+            new:true
+        });
+        res.send(updateStudent);
+    }catch(e){
+        res.status(404).send(e);
+    }
+})
+
+app.delete('/:id',async(req,res)=> {
+    try{
+        const _id = req.params.id;
+        const deleteStudent = await Student.findByIdAndDelete(_id)
+        if(!_id){
+            return res.status(400).send()
+        }
+        else{
+            res.send(deleteStudent);
+        }
+    }catch(e){
+        res.status(500).send(e);
+    }
+})
+
+app.listen(port, () => {
+    console.log(`connecting to port no ${port}`);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // app.get('/',(req,res) => {
 //     res.send('Hello world from Jay');
 // });
@@ -83,86 +177,4 @@ app.use(express.json());
 //     }catch(e){
 //         res.status(500).send(e);
 //     }
-// })
-
-app.post('/',async(req,res) => {
-    try{
-        const user =new Student(req.body);
-        const createUser = await user.save();
-        res.status(201).send(createUser);
-    }catch(e){
-        res.status(400).send(e);
-    }
-})
-
-app.get('/',async(req,res) => {
-    try{
-        const studentsData = await Student.find();
-        res.send(studentsData);
-    }catch(e){
-        res.send(e);
-    }
-})
-
-app.get('/:id', async(req,res) => {
-    try{
-        const _id = req.params.id;
-
-        const studentData = await Student.findById(_id);
-        if(!studentData){
-            return res.status(404).send();
-        }else{
-            res.send(studentData);
-        }
-    }catch(e){
-        res.status(500).send(e);
-    }    
-})
-
-
-app.patch('/:id', async (req,res) => {
-    try{
-        const _id = req.params.id;
-        const updateStudent = await Student.findByIdAndUpdate(_id,req.body,{
-            new:true
-        });
-        res.send(updateStudent);
-    }catch(e){
-        res.status(404).send(e);
-    }
-})
-
-app.delete('/:id',async(req,res)=> {
-    try{
-        const _id = req.params.id;
-        const deleteStudent = await Student.findByIdAndDelete(_id)
-        if(!_id){
-            return res.status(400).send()
-        }
-        else{
-            res.send(deleteStudent);
-        }
-    }catch(e){
-        res.status(500).send(e);
-    }
-})
-
-app.listen(port, () => {
-    console.log(`connecting to port no ${port}`);
-});
-
-
-// app.get('/students/:name', async(req,res) => {
-//     try{
-//         const _name = req.params.name;
-
-//         const studentData1 = await Student.findOne({name:_name});
-//         if(!studentData1){
-//             return res.status(404).send();
-//         }else{
-//             res.send(studentData1);
-//         }
-//     }catch(e){
-//         res.status(500).send(e);
-//     }    
 // })
